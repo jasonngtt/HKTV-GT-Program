@@ -1,0 +1,33 @@
+Microservice Data Migration User Guide
+
+
+Overview:
+
+This guide provides step-by-step instructions on using the Crime Data Migration Microservice. The microservice is designed to migrate crime data from a CSV file to a MariaDB (MySQL) database, and it includes a search feature based on the occurrence date.
+
+Prerequisites:
+
+	•	Java installed on your machine.
+	•	Docker installed for containerization.
+	•	Access to a MariaDB (MySQL) database.
+	•	Knowledge of basic command-line usage.
+
+Steps:
+
+		Clone the Repository: git clone <repository-url> cd my-microservice   
+		Build the Docker Image: docker build -t my-microservice:latest .   
+		Run the Docker Container: docker run -p 8080:8080 my-microservice:latest   
+		Verify Microservice is Running:
+		Open a web browser and visit http://localhost:8080. You should see a welcome message.
+		Migrate Data:
+	•	Use the /api/migrate-data endpoint to migrate crime data. Example:   curl -X POST -H "Content-Type: application/json" -d @data.json http://localhost:8080/api/migrate-data   
+	•	Replace data.json with your CSV data in JSON format.
+		Search by Date:
+	•	Use the /api/search-by-date endpoint for date-based searches. Example:   curl -X POST -H "Content-Type: application/json" -d '{"fromDate": "2022-01-01T00:00:00", "toDate": "2022-06-01T00:00:00"}' http://localhost:8080/api/search-by-date   
+		Stop and Remove the Container: docker stop $(docker ps -q --filter ancestor=my-microservice:latest) docker rm $(docker ps -aq --filter ancestor=my-microservice:latest)  
+===================================================================================== 
+Notes:
+	•	Adjust the API paths and server port if needed.
+	•	Ensure proper indexing on the database for optimal search performance.
+	•	Monitor logs for data migration progress.
+	•	Customize API calls based on specific requirements.
